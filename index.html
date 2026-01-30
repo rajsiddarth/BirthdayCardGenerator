@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Card Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Birthday Card</h1>
+      <p>Create a card that feels like you wrote it</p>
+    </header>
+
+    <main class="main">
+      <section class="form-section">
+        <form id="card-form" class="card-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Alex" required>
+            </div>
+            <div class="form-group">
+              <label for="age">Age</label>
+              <input type="number" id="age" name="age" placeholder="25" min="1" max="120" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="characteristics">What makes them special <span class="hint">(e.g. kind, funny, always there for me)</span></label>
+            <textarea id="characteristics" name="characteristics" rows="2" placeholder="A few words that describe them…"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="personal-message">Your message <span class="hint">(optional — write from the heart)</span></label>
+            <textarea id="personal-message" name="personal-message" rows="4" placeholder="Write something personal. If you leave this blank, we’ll create a message from the words above."></textarea>
+          </div>
+          <button type="submit" class="btn-generate">Generate card</button>
+        </form>
+      </section>
+
+      <section class="card-section" id="card-section" aria-hidden="true">
+        <div class="card-container">
+          <article class="birthday-card" id="birthday-card">
+            <div class="card-image-wrapper">
+              <img id="card-image" src="" alt="Birthday celebration" class="card-image">
+            </div>
+            <div class="card-content">
+              <h2 class="card-title">Happy birthday!</h2>
+              <p class="card-recipient" id="card-recipient"></p>
+              <div class="card-message" id="card-message"></div>
+              <p class="card-signature" id="card-signature"></p>
+            </div>
+          </article>
+          <div class="card-actions">
+            <button type="button" class="btn btn-download" id="btn-download">Download</button>
+            <button type="button" class="btn btn-new" id="btn-new">Create another</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+</html>
