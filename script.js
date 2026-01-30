@@ -34,12 +34,39 @@ const CLOSINGS = [
 const form = document.getElementById('card-form');
 const cardSection = document.getElementById('card-section');
 const birthdayCard = document.getElementById('birthday-card');
+const cardImageWrapper = document.getElementById('card-image-wrapper');
 const cardImage = document.getElementById('card-image');
 const cardRecipient = document.getElementById('card-recipient');
 const cardMessage = document.getElementById('card-message');
 const cardSignature = document.getElementById('card-signature');
+const photoInput = document.getElementById('photo');
+const photoLabel = document.getElementById('photo-label');
+const photoError = document.getElementById('photo-error');
 const btnDownload = document.getElementById('btn-download');
 const btnNew = document.getElementById('btn-new');
+
+const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png'];
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
+
+function isPhotoTypeValid(file) {
+  if (!file) return true;
+  const type = (file.type || '').toLowerCase();
+  const name = (file.name || '').toLowerCase();
+  const ext = name.includes('.') ? '.' + name.split('.').pop() : '';
+  return ALLOWED_PHOTO_TYPES.includes(type) || ALLOWED_EXTENSIONS.includes(ext);
+}
+
+function showPhotoError(message) {
+  photoError.textContent = message;
+  photoError.hidden = false;
+  photoLabel.classList.add('has-error');
+}
+
+function clearPhotoError() {
+  photoError.textContent = '';
+  photoError.hidden = true;
+  photoLabel.classList.remove('has-error');
+}
 
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -93,7 +120,7 @@ function setCardMessage(element, text) {
   element.appendChild(document.createTextNode(text));
 }
 
-function showCard(name, age, characteristicsStr, personalMessageStr) {
+function showCard(name, age, characteristicsStr, personalMessageStr, photoDataUrl) {
   const traits = parseCharacteristics(characteristicsStr);
   const hasPersonal = personalMessageStr && personalMessageStr.trim().length > 0;
 
@@ -106,8 +133,16 @@ function showCard(name, age, characteristicsStr, personalMessageStr) {
     messageText = buildMessageFromTraits(name, age, traits);
   }
 
-  cardImage.src = pickRandom(BIRTHDAY_IMAGES);
-  cardImage.alt = `Birthday celebration for ${name}`;
+  if (photoDataUrl) {
+    cardImage.src = photoDataUrl;
+    cardImage.alt = `Birthday photo of ${name}`;
+    cardImageWrapper.classList.add('birthday-theme');
+  } else {
+    cardImage.src = pickRandom(BIRTHDAY_IMAGES);
+    cardImage.alt = `Birthday celebration for ${name}`;
+    cardImageWrapper.classList.remove('birthday-theme');
+  }
+
   cardRecipient.textContent = `Dear ${name},`;
   setCardMessage(cardMessage, messageText);
   cardSignature.textContent = signatureText;
@@ -120,18 +155,56 @@ function showCard(name, age, characteristicsStr, personalMessageStr) {
 function hideCard() {
   cardSection.classList.remove('visible');
   cardSection.setAttribute('aria-hidden', 'true');
+  cardImageWrapper.classList.remove('birthday-theme');
   form.reset();
+  photoLabel.textContent = 'Choose a photo';
+  photoLabel.classList.remove('has-file', 'has-error');
+  clearPhotoError();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+photoInput.addEventListener('change', () => {
+  clearPhotoError();
+  const file = photoInput.files[0];
+  if (!file) {
+    photoLabel.textContent = 'Choose a photo';
+    photoLabel.classList.remove('has-file');
+    return;
+  }
+  if (!isPhotoTypeValid(file)) {
+    showPhotoError('Please choose a JPG or PNG image. Other file types are not allowed.');
+    photoInput.value = '';
+    photoLabel.textContent = 'Choose a photo';
+    photoLabel.classList.remove('has-file');
+    return;
+  }
+  photoLabel.textContent = file.name;
+  photoLabel.classList.add('has-file');
+});
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  clearPhotoError();
   const name = document.getElementById('name').value.trim();
   const age = document.getElementById('age').value;
   const characteristics = document.getElementById('characteristics').value.trim();
   const personalMessage = document.getElementById('personal-message').value.trim();
+  const photoFile = photoInput.files[0];
   if (!name || !age) return;
-  showCard(name, age, characteristics, personalMessage);
+
+  if (photoFile) {
+    if (!isPhotoTypeValid(photoFile)) {
+      showPhotoError('Please choose a JPG or PNG image. Other file types are not allowed.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      showCard(name, age, characteristics, personalMessage, ev.target.result);
+    };
+    reader.readAsDataURL(photoFile);
+  } else {
+    showCard(name, age, characteristics, personalMessage, null);
+  }
 });
 
 btnNew.addEventListener('click', hideCard);
