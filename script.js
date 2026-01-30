@@ -144,7 +144,7 @@ btnDownload.addEventListener('click', () => {
       scale: 2,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: '#141414',
+      backgroundColor: '#ffffff',
     })
       .then((canvas) => {
         const link = document.createElement('a');
