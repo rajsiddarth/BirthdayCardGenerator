@@ -34,6 +34,14 @@
             <textarea id="characteristics" name="characteristics" rows="2" placeholder="A few words that describe them…"></textarea>
           </div>
           <div class="form-group">
+            <span class="form-label">Photo of the person <span class="hint">(optional — JPG or PNG only)</span></span>
+            <label class="photo-upload" for="photo">
+              <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+              <span class="photo-upload-label" id="photo-label">Choose a photo</span>
+            </label>
+            <p class="form-error" id="photo-error" role="alert" aria-live="polite" hidden></p>
+          </div>
+          <div class="form-group">
             <label for="personal-message">Your message <span class="hint">(optional — write from the heart)</span></label>
             <textarea id="personal-message" name="personal-message" rows="4" placeholder="Write something personal. If you leave this blank, we’ll create a message from the words above."></textarea>
           </div>
@@ -44,8 +52,28 @@
       <section class="card-section" id="card-section" aria-hidden="true">
         <div class="card-container">
           <article class="birthday-card" id="birthday-card">
-            <div class="card-image-wrapper">
-              <img id="card-image" src="" alt="Birthday celebration" class="card-image">
+            <div class="card-image-wrapper" id="card-image-wrapper">
+              <div class="confetti-container" id="confetti-container" aria-hidden="true">
+                <span class="confetti" style="--i:0;--x:5%;--y:10%;--d:1.2s;--c:#ff6b9d"></span>
+                <span class="confetti" style="--i:1;--x:15%;--y:5%;--d:1.5s;--c:#ffd93d"></span>
+                <span class="confetti" style="--i:2;--x:25%;--y:15%;--d:1.8s;--c:#6bcb77"></span>
+                <span class="confetti" style="--i:3;--x:35%;--y:8%;--d:1.1s;--c:#4d96ff"></span>
+                <span class="confetti" style="--i:4;--x:45%;--y:12%;--d:1.4s;--c:#e879f9"></span>
+                <span class="confetti" style="--i:5;--x:55%;--y:6%;--d:1.6s;--c:#ff9a9e"></span>
+                <span class="confetti" style="--i:6;--x:65%;--y:14%;--d:1.3s;--c:#a8edea"></span>
+                <span class="confetti" style="--i:7;--x:75%;--y:10%;--d:1.7s;--c:#fed6e3"></span>
+                <span class="confetti" style="--i:8;--x:85%;--y:7%;--d:1.2s;--c:#ff6b6b"></span>
+                <span class="confetti" style="--i:9;--x:92%;--y:12%;--d:1.5s;--c:#ffd93d"></span>
+                <span class="confetti" style="--i:10;--x:8%;--y:70%;--d:1.4s;--c:#4d96ff"></span>
+                <span class="confetti" style="--i:11;--x:20%;--y:75%;--d:1.6s;--c:#e879f9"></span>
+                <span class="confetti" style="--i:12;--x:50%;--y:72%;--d:1.1s;--c:#6bcb77"></span>
+                <span class="confetti" style="--i:13;--x:70%;--y:78%;--d:1.5s;--c:#ff9a9e"></span>
+                <span class="confetti" style="--i:14;--x:88%;--y:74%;--d:1.3s;--c:#ffd93d"></span>
+              </div>
+              <div class="birthday-frame">
+                <span class="party-hat" aria-hidden="true">🎂</span>
+                <img id="card-image" src="" alt="Birthday celebration" class="card-image">
+              </div>
             </div>
             <div class="card-content">
               <h2 class="card-title">Happy birthday!</h2>
